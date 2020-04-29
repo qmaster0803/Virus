@@ -8,14 +8,14 @@ import os
 #definition
 speedMin = 3
 speedMax = 5
-peopleCount = 1000
-fieldDimensions = 1000
+peopleCount = 10
+fieldDimensions = 100
 radius = 5
 ver = 100
 letal = 50
 sickPeriodMin = 14
 sickPeriodMax = 50
-birth = 5
+birth = 0
 #end defenition
 
 x = []
@@ -92,7 +92,6 @@ while(True):
                 plots[0].scatter(x[i], y[i], 2, '#000000')
     for i in range(peopleCount):
         if(infected[i]):
-            print(str(i) + ' - ' + str(sick[i]) + ' - ' + str(sickPeriod[i]))
             if(iterator - sick[i] == sickPeriod[i]):
                 if(random.randint(0, 100) > letal):
                     imm[i] = True
@@ -126,18 +125,18 @@ while(True):
     immStats.append(immCount)
     plot.draw()
     plot.pause(0.1)
-    plot.savefig(str(iterator)+'.png')
+    plot.savefig(str(iterator)+'.png', dpi=200)
     plots[0].cla()
     plots[1].cla()
     if(nextBreak): break
     if(infectedCount == 0): nextBreak = True
 
     
-out = cv2.VideoWriter("video.avi", cv2.VideoWriter_fourcc('M','J','P','G'), 3.0, (1500, 811))
+out = cv2.VideoWriter("video.avi", cv2.VideoWriter_fourcc('M','J','P','G'), 3.0, (1920, 1080))
 
 for i in range(1, iterator+1):
     print(("%.2f" % (i/iterator*100.0)) + '%')
-    out.write(cv2.imread(str(i)+'.png'))
+    out.write(cv2.resize(cv2.imread(str(i)+'.png'), (1920, 1080)))
     os.remove(str(i)+'.png')
  
 out.release()
